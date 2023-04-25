@@ -15,7 +15,7 @@ jobs:
 
       - name: Build
         run: |
-          cd my-project # 进入项目目录
+          cd farm-vue # 进入项目目录
           npm install  # 安装依赖
           npm run build  # 执行打包
   
