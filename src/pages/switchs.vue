@@ -6,7 +6,7 @@
 
 <script>
 import { onMounted, ref } from 'vue';
-import { useRouter,useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 export default {
     setup () {
        let buttons=ref(null);

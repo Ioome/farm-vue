@@ -1,130 +1,102 @@
 <template>
-    <div id="bg">
-        <div style="background: rgba(255,255,255,0.5); padding: 30px">
-    <a-row :gutter="16">
-      <a-col :span="12">
-        <a-card>
-          <a-statistic
-            title="Feedback"
-            :value="11.28"
-            :precision="2"
-            suffix="%"
-            :value-style="{ color: '#3f8600' }"
-            style="margin-right: 50px"
+    <div id="bg" >
+      <div class="headBar">
+        <div class="userAvatar">
+          <a-popconfirm
+              title="确定退出登录吗"
+              ok-text="是"
+              cancel-text="否"
+              @confirm="sureExit"
+
           >
-            <template #prefix>
-              <arrow-up-outlined />
-            </template>
-          </a-statistic>
-        </a-card>
-      </a-col>
-      <a-col :span="12">
-        <a-card>
-          <a-statistic
-            title="Idle"
-            :value="9.3"
-            :precision="2"
-            suffix="%"
-            class="demo-class"
-            :value-style="{ color: '#cf1322' }"
-          >
-            <template #prefix>
-              <arrow-down-outlined />
-            </template>
-          </a-statistic>
-        </a-card>
-      </a-col>
-    </a-row>
-  </div>
-  <div class="echarts-box">
-    <div id="myEcharts" :style="{ width: '900px', height: '300px',position:relative,top:'100px',left:'100px' }"></div>
-  </div>
+          <span><user-outlined /></span>
+      <span>{{username}}</span>
+          </a-popconfirm>
+        </div>
+        <div class="headerElement">
+            <router-link to="/home/equitmentButton" class="router" >土地管理</router-link>
+        </div>
+        <div class="headerElement">
+          数据总览
+        </div>
+
+
+      </div>
+      <div>
+        <router-view />
+      </div>
    </div>
 </template>
 
 <script>
-import * as echarts from "echarts";
-import { onMounted,onUnmounted} from "vue";
+
+
+import {ref} from "vue";
+import { UserOutlined } from '@ant-design/icons-vue';
 export default {
-
+    components:{UserOutlined},
     setup () {
-        let echart = echarts;
-    
+let username=ref('')
+      username.value=window.localStorage.getItem('username')
+     let sureExit=()=>{
+       console.log("退出力")
+     }
 
-onMounted(() => {
-  initChart();
-});
 
-onUnmounted(() => {
-  echart.dispose;
-});
 
-// 基础配置一下Echarts
-function initChart() {
-  let chart = echart.init(document.getElementById("myEcharts"), "dark");
-  // 把配置和数据放这里
-  chart.setOption({
-    xAxis: {
-      type: "category",
-      data: [
-        "一月",
-        "二月",
-        "三月",
-        "四月",
-        "五月",
-        "六月",
-        "七月",
-        "八月",
-        "九月",
-        "十月",
-        "十一月",
-        "十二月"
-      ]
-    },
-    tooltip: {
-      trigger: "axis"
-    },
-    yAxis: {
-      type: "value"
-    },
-    series: [
-      {
-        data: [
-          820,
-          932,
-          901,
-          934,
-          1290,
-          1330,
-          1320,
-          801,
-          102,
-          230,
-          4321,
-          4129
-        ],
-        type: "line",
-        smooth: true
-      }
-    ]
-  });
-  window.onresize = function() {
-    //自适应大小
-    chart.resize();
-
-  };
+return {
+  username,
+  sureExit
 }
-
-       return{initChart}
     }
 }
 </script>
 
 <style  scoped>
+
+.headBar{
+  position: fixed;
+  background-color: rgba(255,255,255,0.3);
+  height: 60px;
+  width: 100%;
+  box-shadow: 0px 4px 4px rgba(0,0,0,0.5);
+ display: flex;
+  flex-wrap: nowrap;
+}
+.router:hover{
+  color: white;
+}
+.userAvatar{
+  width: 200px;
+  text-align: center;
+  padding-top: 15px;
+}
+.userAvatar :hover{
+  cursor: pointer;
+  text-decoration: underline;
+}
+.headerElement{
+  height: 100%;
+  font-size: 20px;
+  width: 100px;
+  padding-top: 13px;
+  text-align: center;
+  font-family: "DejaVu Math TeX Gyre";
+  margin-left: 20px;
+}
+.headerElement:hover {
+  background-color: #00a1ff;
+  color: white;
+  cursor: pointer;
+  border-radius: 10px;
+}
 #bg{
     position: absolute;
     background-image: url(../assets/Agri.jpg);
     margin:0px;
+   position: fixed;
+  overflow-x: scroll;
+
 
 background-size:100% 100%;
 background-attachment:fixed;

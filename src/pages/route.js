@@ -11,7 +11,23 @@ let routes = [{
     },
     {
         path: '/home',
-        component: home
+        component: home,
+        children:[
+            {
+                path: 'equitmentButton',
+                component: () => import('@/pages/EButton')
+            }
+
+        ],
+        beforeEnter:(from, to,next)=>{
+            if (window.localStorage.getItem('token')){
+                next()
+            }
+            else {
+                alert("你还没有登录，请先登录")
+
+            }
+        }
     },
     {
         path: '/login',
@@ -19,7 +35,9 @@ let routes = [{
     },
     {
         path: '/switchs',
-        component: switchs
+        component: switchs,
+
+
     }
 ];
 let router = createRouter({
