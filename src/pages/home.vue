@@ -1,52 +1,63 @@
 <template>
     <div id="bg" >
-      <div class="headBar">
-        <div class="userAvatar">
-          <a-popconfirm
-              title="确定退出登录吗"
-              ok-text="是"
-              cancel-text="否"
-              @confirm="sureExit"
 
-          >
-          <span><user-outlined /></span>
-      <span>{{username}}</span>
-          </a-popconfirm>
-        </div>
-        <div class="headerElement">
-            <router-link to="/home/equitmentButton" class="router" >土地管理</router-link>
-        </div>
-        <div class="headerElement">
-          数据总览
-        </div>
+      <a-menu
+          v-model:openKeys="openKeys"
+          v-model:selectedKeys="selectedKeys"
+          mode="inline"
+          theme="light"
 
+          style="width:13%;height: 100%;box-shadow:5px 0px 10px #6b7070;z-index: 1000000"
+      >
+        <div style="height: 80px;text-align: center;padding-top: 20px"><img :src="require('../assets/Hunter.jpg')" width="50" height="50" style="border-radius: 50px" /></div>
+        <hr style="background-color:rgba(85, 85, 85, 0.36); height: 1px;border: none;margin-bottom: 30px" />
+        <a-menu-item key="1">
 
-      </div>
-      <div>
-        <router-view />
-      </div>
+          <span style="font-size: 20px;margin-left:20%"><img :src="require('../assets/土地.svg')" style="margin-right: 10px;">土地管理</span>
+        </a-menu-item>
+        <a-menu-item key="2">
+
+          <span  style="font-size: 20px;margin-left: 20%"><img :src="require('../assets/数据监管.svg')" style="margin-right: 10px;">数据总览</span>
+        </a-menu-item>
+
+      </a-menu>
+      <div class="header"></div>
    </div>
 </template>
 
 <script>
 
 
-import {ref} from "vue";
-import { UserOutlined } from '@ant-design/icons-vue';
+import {  reactive, toRefs,ref } from 'vue';
+
 export default {
-    components:{UserOutlined},
+
     setup () {
 let username=ref('')
       username.value=window.localStorage.getItem('username')
      let sureExit=()=>{
        console.log("退出力")
      }
-
+      const state = reactive({
+        rootSubmenuKeys: ['sub1', 'sub2', 'sub4'],
+        openKeys: [],
+        selectedKeys: [],
+      });
+      const onOpenChange = openKeys => {
+        const latestOpenKey = openKeys.find(key => state.openKeys.indexOf(key) === -1);
+        if (state.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+          state.openKeys = openKeys;
+        } else {
+          state.openKeys = latestOpenKey ? [latestOpenKey] : [];
+        }
+      };
 
 
 return {
   username,
-  sureExit
+  sureExit,
+  ...toRefs(state),
+  onOpenChange,
 }
     }
 }
@@ -54,41 +65,14 @@ return {
 
 <style  scoped>
 
-.headBar{
+.header{
   position: fixed;
-  background-color: rgba(255,255,255,0.3);
-  height: 60px;
+  top: 0;
   width: 100%;
-  box-shadow: 0px 4px 4px rgba(0,0,0,0.5);
- display: flex;
-  flex-wrap: nowrap;
-}
-.router:hover{
-  color: white;
-}
-.userAvatar{
-  width: 200px;
-  text-align: center;
-  padding-top: 15px;
-}
-.userAvatar :hover{
-  cursor: pointer;
-  text-decoration: underline;
-}
-.headerElement{
-  height: 100%;
-  font-size: 20px;
-  width: 100px;
-  padding-top: 13px;
-  text-align: center;
-  font-family: "DejaVu Math TeX Gyre";
-  margin-left: 20px;
-}
-.headerElement:hover {
-  background-color: #00a1ff;
-  color: white;
-  cursor: pointer;
-  border-radius: 10px;
+  height: 70px;
+  background-color: white;
+  z-index: -100;
+  box-shadow:0px 5px 10px #6b7070  ;
 }
 #bg{
     position: absolute;
