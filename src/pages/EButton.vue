@@ -1,177 +1,200 @@
 <template>
   <div>
-    <a-button type="primary" size="large" shape="round" id="Buttons" @click="visible=true" v-if="!isChoose"><plus-outlined />选择土地</a-button>
-    <a-modal  v-model:visible="visible" title="我的土地" @ok="handleOk" :style="DialogSty" :footer="null" >
-      <a-table :columns="columns" :data-source="deviceData"  :scroll="{ y: 240 }">
-        <template #headerCell="{ column }">
-          <template v-if="column.key === 'land'">
-        <span>
-          土地
-        </span>
-          </template>
-          <template v-else-if="column.key === 'operation'">
-        <span>
-          操作
-        </span>
-          </template>
-        </template>
 
-        <template #bodyCell="{ column,record }">
+    <a-table :columns="columns" 
+    :data-source="datas"
+    style="width: 90%;"
+    
 
-          <template v-if="column.key === 'land'">
+    >
+    
+    <template #detail="{ record }">
+    <a-button type="primary" @click="showDetail(record.key)">查看土地详情</a-button>
+    <a-button type="danger" @click="deleteBlock(record.key)" style="margin-left: 10px;">删除土地</a-button>
+   </template>
+  </a-table>
+  
+  <a-modal v-model:visible="detailVisible" title="土地信息"  :footer="false">
+    <a-page-header :title="farmData.name" :subTitle="farmData.city" />
 
-              {{ record.landName }}
-
-
-        </template>
-          <template v-if="column.key === 'operation'">
-
-           <a-button type="primary" @click="checkMyLand(record.id)">查看</a-button>
-
-
-          </template>
-        </template>
-      </a-table>
+<a-row :gutter="16" class="farm-details">
+  <a-col :span="8">
+    <a-card :title="'农作物信息'">
+      <p>名称: {{ farmData.cropName }}</p>
+      <p>类型: {{ farmData.cropType }}</p>
+      <p>种类: {{ farmData.cropVariety }}</p>
+      <p>生长周期: {{ farmData.growthCycle }} 天</p>
+    </a-card>
+  </a-col>
+  <a-col :span="8">
+    <a-card :title="'生长环境'">
+      <p>推荐温度: {{ farmData.recommendedTemperature }} °C</p>
+      <p>推荐湿度: {{ farmData.recommendedHumidity }} %</p>
+    </a-card>
+  </a-col>
+  <a-col :span="8">
+    <a-card :title="'农田信息'">
+      <p>大小: {{ farmData.size }} 亩</p>
+    </a-card>
+  </a-col>
+</a-row>
+  </a-modal>
+  <a-modal v-model:visible="visible" title="Basic Modal" >
+    <a-descriptions title="" :column="1" bordered>
+    <a-descriptions-item label="土地">Cloud Database</a-descriptions-item>
+    <a-descriptions-item label="地址">Prepaid</a-descriptions-item>
+    <a-descriptions-item label="作物">18:00:00</a-descriptions-item>
+    <a-descriptions-item label="作物类型">18:00:00</a-descriptions-item>
+    <a-descriptions-item label="作物图像"><a-button>查看图像</a-button></a-descriptions-item>
+    <a-descriptions-item label="生长周期">18:00:00</a-descriptions-item>
+    <a-descriptions-item label="适宜温度">18:00:00</a-descriptions-item>
+    <a-descriptions-item label="适宜土壤湿度">18:00:00</a-descriptions-item>
+    <a-descriptions-item label="状态">
+      <a-badge status="processing" text="Running" />
+    </a-descriptions-item>
+  
+  </a-descriptions>
     </a-modal>
-    <div v-if="isChoose" class="weather">
-      <a-card title="日照量" style="width: 300px;height: 120px">
-        <template #extra><img :src="require('../assets/太阳.svg')"></template>
-        <div style="text-align: center;margin-top:-20px">
-          <span style="font-size: 30px; " ><strong>3.021</strong></span>
-        </div>
-      </a-card>
-      <a-card title="今日降雨量" style="width: 300px;height: 120px">
-        <template #extra><img :src="require('../assets/雨量站 降雨量.svg')"></template>
-        <div style="text-align: center;margin-top:-20px">
-          <span style="font-size: 30px; " ><strong>3.021</strong></span>
-        </div>
-      </a-card>
-      <a-card title="空气温度" style="width: 300px;height: 120px">
-        <template #extra><img :src="require('../assets/温度.svg')"></template>
-        <div style="text-align: center;margin-top:-20px">
-          <span style="font-size: 30px; " ><strong>3.021</strong></span>
-        </div>
-      </a-card>
-      <a-card title="土壤温度" style="width: 300px;height: 120px">
-        <template #extra><img :src="require('../assets/土壤温度.svg')"></template>
-        <div style="text-align: center;margin-top:-20px">
-          <span style="font-size: 30px; " ><strong>3.021</strong></span>
-        </div>
-      </a-card>
-      <a-card title="空气湿度" style="width: 300px;height: 120px">
-        <template #extra><img :src="require('../assets/空气湿度.svg')"></template>
-        <div style="text-align: center;margin-top:-20px">
-          <span style="font-size: 30px; " ><strong>3.021</strong></span>
-        </div>
-      </a-card>
-      <div class="plan">
-      <div style="font-size: 30px;font-family: Fantasy;margin-left: 30px;margin-top: 10px">
-        <span>种植计划</span>
-        <a-button type="primary" style="position: relative;left:83%" @click="visible=true"><plus-outlined />选择土地</a-button>
-      </div>
-        <hr/>
-        <div style="width: 100%;text-align: center">
-          <AImage
-              :width="400"
-
-              :src="require('../assets/小麦.jpg')"
-          >
-
-          </AImage>
-        </div>
-        <div style="width: 80%;margin-top: 40px;margin-left: 180px;background-color: rgba(255,255,255,1);">
-          <a-descriptions title="" layout="vertical" :column="1" bordered>
-            <a-descriptions-item label="农作物">小麦</a-descriptions-item>
-            <a-descriptions-item label="作物分类">大型谷类</a-descriptions-item>
-            <a-descriptions-item label="生长周期">90天</a-descriptions-item>
-            <a-descriptions-item label="推荐土壤湿度">60%-70%</a-descriptions-item>
-            <a-descriptions-item label="温度推荐" :span="2">15-20°C</a-descriptions-item>
-            <a-descriptions-item label="状态" :span="3">
-              <a-badge status="processing" text="生长中" />
-            </a-descriptions-item>
-
-          </a-descriptions>
-        </div>
-        <div style="width: 100%;text-align: center;margin-top: 20px">
-          <AImage
-              :width="400"
-
-              :src="require('../assets/玉米.jpg')"
-          >
-
-          </AImage>
-        </div>
-        <div style="width: 80%;margin-top: 40px;margin-left: 180px;background-color: rgba(255,255,255,1);">
-          <a-descriptions title="" layout="vertical" :column="1" bordered>
-            <a-descriptions-item label="农作物">玉米</a-descriptions-item>
-            <a-descriptions-item label="作物分类">中型谷类</a-descriptions-item>
-            <a-descriptions-item label="生长周期">120天</a-descriptions-item>
-            <a-descriptions-item label="推荐土壤湿度">70%-80%</a-descriptions-item>
-            <a-descriptions-item label="温度推荐" :span="2">20°C-25°C</a-descriptions-item>
-            <a-descriptions-item label="状态" :span="3">
-              <a-badge status="success" text="待收割" />
-            </a-descriptions-item>
-
-          </a-descriptions>
-        </div>
-
-      </div>
-    </div>
-
   </div>
 </template>
 
 <script>
-import {PlusOutlined} from "@ant-design/icons-vue";
-import {ref,onMounted} from "vue";
-import developApis from "@/api/request";
+import { reactive,onMounted,ref } from 'vue';
+import developApis from '@/api/request';
+const columns = [
+  {
+    title: '土地',
+    dataIndex: 'name',
+    key: 'name',
+    slots: {
+      customRender: 'name',
+    },
+  },
+ 
+  {
+    title: '地址',
+    dataIndex: 'address',
+    key: 'address 1',
+    ellipsis: true,
+  },
+  {
+    title: '详情',
+    dataIndex: 'detail',
+    key: 'detail',
+    slots: {
+      customRender: 'detail',
+    },
+  },
+ 
+
+];
+const data = [
+  {
+    key: '1',
+    name: 'John Brown',
+    age: 32,
+    address: 'New a',
+    tags: ['nice', 'developer'],
+  },
+  {
+    key: '2',
+    name: 'Jim Green',
+    age: 42,
+    address: 'Londona',
+    tags: ['loser'],
+  },
+  {
+    key: '3',
+    name: 'Joe Black',
+    age: 32,
+    address: 'Sidney a',
+    tags: ['cool', 'teacher'],
+  },
+];
 export default {
   name: "EButton",
-  components:{PlusOutlined},
+  
   setup(){
-    let visible=ref(false)
-    let deviceData=ref([])
-    let isChoose=ref(false)
-
-    const columns =ref( [{
-      name: '土地',
-      dataIndex: 'land',
-      key: 'land',
-    }, {
-      title: '操作',
-      dataIndex: 'operation',
-      key: 'operation',
-    }])
-
-    let getAllEquiment=()=>{
-      developApis.getAllBlocks().then((res)=>{
-        deviceData.value=res.data.data
-        console.log(deviceData.value)
-      })
-    }
-   function checkMyLand(id){
-developApis.checkTheLand({id:id}).then()
-     developApis.checkEquiment({id:2}).then(()=>{
-       isChoose.value=true
-       visible.value=false
-     })
-   }
-    let handleOk=()=>{
-
-    }
-    let DialogSty={'position':'fixed','top':'30%','left':'35%','max-height':'400px'}
-    onMounted(()=>{
-      getAllEquiment()
+    let detailVisible=ref(false)
+    let farmData=reactive({
+      name:'',
+      city:'',
+      cropName:'',
+      cropType:'',
+      cropVariety:'',
+      growthCycle:'',
+      recommendedTemperature:'',
+      recommendedHumidity:'',
+      size:''
     })
+   let visible=ref(false)
+   let pagination=reactive({
+    hideOnSinglePage: true
+   })
+   let formState=reactive({
+    landName:'',
+    landPosition:'',
+      plantName:'',
+      plantType:'',
+      cropImg:'',
+      cycle:'',
+      Recommandtemperature:'',
+      humidity:'',
+      status:''
+   })
+   let datas=ref([]);
+   let deleteBlock=(id)=>{
+    developApis.deleteBlocks({id:id}).then((res)=>{
+      if (res.status){
+        getLandData()
+      }
+    })
+   }
+    let showDetail=(id)=>{
+      detailVisible.value=true
+      developApis.getBlockDetail({id:id}).then((res)=>{
+            farmData.name=res.data.data.landName
+            formState.city=res.data.data.landPosition
+            formState.cropName=res.data.data.suitableCrop
+
+      })
+     
+    }
+    
+   let getLandData=()=>{
+    datas.value=[];
+developApis.getAllBlocks().then((res)=>{
+    res.data.data.map((item)=>{
+   
+      datas.value.push({
+        key: item.id,
+        name: item.landName,
+        address: item.landPosition,
+        
+      
+      })
+   
+    })
+
+})
+developApis.getuserInfo().then()
+   }
+   onMounted(()=>{
+    getLandData();
+    
+   })
     return{
-      visible,
-      handleOk,
-      DialogSty,
-      getAllEquiment,
-      deviceData,
+      data,
       columns,
-      checkMyLand,
-      isChoose
+      pagination,
+      datas,
+      showDetail,
+      getLandData,
+      visible,
+      formState,
+      deleteBlock,
+      detailVisible,
+      farmData
     }
   }
 }

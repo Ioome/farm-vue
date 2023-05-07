@@ -38,6 +38,14 @@ const developApis={
       }
       )
     },
+    getBlockDetail(data){
+        return axios.post(baseURL+'/block/getOne',data,{
+            headers:
+                {
+                    token:window.localStorage.getItem('token')
+                },
+        })
+    },
     checkTheLand(data){
         return axios.post(baseURL+'/block/getPlan',data,{
             headers:
@@ -46,6 +54,22 @@ const developApis={
                 },
         })
     },
+    getuserInfo(data={}){
+        return axios.post(baseURL+'/admin/userInfo',data,{
+            headers:
+                {
+                    token:window.localStorage.getItem('token')
+                },
+        })
+    },
+deleteBlocks(data){
+    return axios.post(baseURL+'/block/delete',data,{
+        headers:
+            {
+                token:window.localStorage.getItem('token')
+            },
+    })
+},
     checkEquiment(data){
        return axios.post(baseURL+'/equipment/getEqupmentLists',data,{
            headers:

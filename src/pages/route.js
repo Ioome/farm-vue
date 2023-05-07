@@ -16,9 +16,26 @@ let routes = [{
             {
                 path: 'equitmentButton',
                 component: () => import('@/pages/EButton')
+            },
+            {
+                path:'datav',
+                component:()=>import('@/pages/datav')
             }
 
         ],
+        beforeEnter:(from, to,next)=>{
+            if (window.localStorage.getItem('token')){
+                next()
+            }
+            else {
+                alert("你还没有登录，请先登录")
+
+            }
+        }
+    },
+    {
+        path:'/datav',
+        component:()=>import('@/pages/datav'),
         beforeEnter:(from, to,next)=>{
             if (window.localStorage.getItem('token')){
                 next()
@@ -38,7 +55,8 @@ let routes = [{
         component: switchs,
 
 
-    }
+    },
+    
 ];
 let router = createRouter({
     history: createWebHashHistory(),
