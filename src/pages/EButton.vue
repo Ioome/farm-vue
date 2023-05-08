@@ -20,21 +20,22 @@
 <a-row :gutter="16" class="farm-details">
   <a-col :span="8">
     <a-card :title="'农作物信息'">
-      <p>名称: {{ farmData.cropName }}</p>
-      <p>类型: {{ farmData.cropType }}</p>
-      <p>种类: {{ farmData.cropVariety }}</p>
-      <p>生长周期: {{ farmData.growthCycle }} 天</p>
+      <p>名称: {{ farmData.cropName||"玉米" }}</p>
+      <p>类型: {{ farmData.cropType||'小型' }}</p>
+      <p>种类: {{ farmData.cropVariety||'谷类' }}</p>
+      <p>生长周期: {{ farmData.growthCycle||'120' }} 天</p>
     </a-card>
   </a-col>
   <a-col :span="8">
     <a-card :title="'生长环境'">
-      <p>推荐温度: {{ farmData.recommendedTemperature }} °C</p>
-      <p>推荐湿度: {{ farmData.recommendedHumidity }} %</p>
+      <p>推荐温度: {{ farmData.recommendedTemperature||'25-30' }} °C</p>
+      <p>推荐湿度: {{ farmData.recommendedHumidity||"70-80" }} %</p>
     </a-card>
   </a-col>
   <a-col :span="8">
     <a-card :title="'农田信息'">
-      <p>大小: {{ farmData.size }} 亩</p>
+      <p>大小: {{ farmData.size||900 }} 亩</p>
+      <p>所在城市: {{ farmData.city||'山东省济南市历城区' }} </p>
     </a-card>
   </a-col>
 </a-row>
