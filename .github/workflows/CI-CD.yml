@@ -15,7 +15,7 @@ jobs:
 
       - name: Build
         run: |
-          npm install  # 安装依赖
+          yarn install  # 安装依赖
           npm run build  # 执行打包
   
       # 连接到ssh，并且做一个拷贝操作的action
