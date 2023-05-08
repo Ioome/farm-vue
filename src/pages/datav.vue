@@ -3,56 +3,56 @@
     <div class="title">数据总览</div>
     
     <div class="leftContent">
-        <dv-border-box-13 class="weather">
+        <BorderBox13 class="weather">
         <div style="margin-top: 35px;margin-left: 30px;">
             <span style="font-size: 20px;color: white;">日照量</span> 
           <img :src="require('../assets/太阳.svg')" /> 
-          <span style="font-size: 30px;color: aqua;margin-left: 40px;"><strong>4.09</strong></span>
+          <span style="font-size: 30px;color: aqua;margin-left: 40px;"><strong>65.25900</strong></span>
         </div>
-        </dv-border-box-13>
-        <dv-border-box-13 class="weather">
+        </BorderBox13>
+        <BorderBox13 class="weather">
             <div style="margin-top: 35px;margin-left: 30px;">
             <span style="font-size: 20px;color: white;">土壤温度</span> 
           <img :src="require('../assets/土壤温度.svg')" /> 
           <span style="font-size: 30px;color: aqua;margin-left: 40px;"><strong>4.09</strong></span>
         </div>
-        </dv-border-box-13>
-        <dv-border-box-13 class="weather">
+        </BorderBox13>
+        <BorderBox13 class="weather">
             <div style="margin-top: 35px;margin-left: 30px;">
             <span style="font-size: 20px;color: white;">温度</span> 
           <img :src="require('../assets/温度.svg')" /> 
-          <span style="font-size: 30px;color: aqua;margin-left: 40px;"><strong>4.09</strong></span>
+          <span style="font-size: 30px;color: aqua;margin-left: 40px;"><strong>17°C</strong></span>
         </div>
-        </dv-border-box-13>
-        <dv-border-box-13 class="weather">
+        </BorderBox13>
+        <BorderBox13 class="weather">
             <div style="margin-top: 35px;margin-left: 30px;">
             <span style="font-size: 20px;color: white;">降雨量</span> 
           <img :src="require('../assets/雨量站 降雨量.svg')" /> 
           <span style="font-size: 30px;color: aqua;margin-left: 40px;"><strong>4.09</strong></span>
         </div>
-        </dv-border-box-13>
-        <dv-border-box-13 class="weather">
+        </BorderBox13>
+        <BorderBox13 class="weather">
             <div style="margin-top: 35px;margin-left: 30px;">
             <span style="font-size: 20px;color: white;">数据监管</span> 
           <img :src="require('../assets/数据监管.svg')" /> 
           <span style="font-size: 30px;color: aqua;margin-left: 40px;"><strong>4.09</strong></span>
         </div>
-        </dv-border-box-13>
+        </BorderBox13>
     </div>
     <div class="charts">
-        <dv-border-box-13 style="padding-top: 30px;padding-left: 20px;">
+        <BorderBox13 style="padding-top: 30px;padding-left: 20px;">
         <div id="data" style="width: 600px;height: 360px;"></div>
-        </dv-border-box-13>
-        <dv-border-box-13 style="padding-top:-40px;padding-left: 20px;height: 70%;">
+        </BorderBox13>
+        <BorderBox13 style="padding-top:-40px;padding-left: 20px;height: 70%;">
             <div id="datas" style="width: 600px;height: 290px;"></div>
-        </dv-border-box-13>
+        </BorderBox13>
     </div>
     <div class="map">
-        <dv-border-box-11 title="dv-border-box-11" style="padding-top: 100px;">
+        <BorderBox11 title="dv-border-box-11" style="padding-top: 100px;">
             <div id="maps" style="width: 500;height: 500px;">
 
             </div>
-        </dv-border-box-11>
+        </BorderBox11>
     </div>
     </div>
 </template>
