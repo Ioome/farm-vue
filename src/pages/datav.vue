@@ -7,35 +7,35 @@
         <div style="margin-top: 35px;margin-left: 30px;">
             <span style="font-size: 20px;color: white;">日照量</span> 
           <img :src="require('../assets/太阳.svg')" /> 
-          <span style="font-size: 30px;color: aqua;margin-left: 40px;"><strong>65.25900</strong></span>
+          <span style="font-size: 30px;color: aqua;margin-left: 20px;"><strong>{{ sunshine }}KWh</strong></span>
         </div>
         </dv-border-box13>
         <dv-border-box13 class="weather">
             <div style="margin-top: 35px;margin-left: 30px;">
             <span style="font-size: 20px;color: white;">土壤温度</span> 
           <img :src="require('../assets/土壤温度.svg')" /> 
-          <span style="font-size: 30px;color: aqua;margin-left: 40px;"><strong>4.09</strong></span>
+          <span style="font-size: 30px;color: aqua;margin-left: 40px;"><strong>{{ earthTem||35 }}°C</strong></span>
         </div>
         </dv-border-box13>
         <dv-border-box13 class="weather">
             <div style="margin-top: 35px;margin-left: 30px;">
             <span style="font-size: 20px;color: white;">温度</span> 
           <img :src="require('../assets/温度.svg')" /> 
-          <span style="font-size: 30px;color: aqua;margin-left: 40px;"><strong>17°C</strong></span>
+          <span style="font-size: 30px;color: aqua;margin-left: 40px;"><strong>{{ weatherTem  }}°C</strong></span>
         </div>
         </dv-border-box13>
         <dv-border-box13 class="weather">
             <div style="margin-top: 35px;margin-left: 30px;">
             <span style="font-size: 20px;color: white;">降雨量</span> 
           <img :src="require('../assets/雨量站 降雨量.svg')" /> 
-          <span style="font-size: 30px;color: aqua;margin-left: 40px;"><strong>4.09</strong></span>
+          <span style="font-size: 30px;color: aqua;margin-left: 40px;"><strong>{{ rainfall }}mm</strong></span>
         </div>
         </dv-border-box13>
         <dv-border-box13 class="weather">
             <div style="margin-top: 35px;margin-left: 30px;">
-            <span style="font-size: 20px;color: white;">数据监管</span> 
+            <span style="font-size: 20px;color: white;">空气湿度</span> 
           <img :src="require('../assets/数据监管.svg')" /> 
-          <span style="font-size: 30px;color: aqua;margin-left: 40px;"><strong>4.09</strong></span>
+          <span style="font-size: 30px;color: aqua;margin-left: 40px;"><strong>{{ airWet||4.09 }}</strong></span>
         </div>
         </dv-border-box13>
     </div>
@@ -48,7 +48,7 @@
         </dv-border-box13>
     </div>
     <div class="map">
-        <dv-border-box11 title="dv-border-box11" style="padding-top: 100px;">
+        <dv-border-box11 title="农作物分类" style="padding-top: 100px;">
             <div id="maps" style="width: 500;height: 500px;">
 
             </div>
@@ -58,10 +58,47 @@
 </template>
 
 <script>
-import { reactive,onMounted } from 'vue';
+import { reactive,onMounted,ref } from 'vue';
 import * as echarts from 'echarts'
+import developApis from '@/api/request';
 export default {
     setup () {
+      let sunshine=ref(0);
+      let earthTem=ref(0);
+      let weatherTem=ref(0);
+      let airWet=ref(0);
+      let rainfall=ref(0);
+   
+      let getdatas=()=>{
+        developApis.getSunshine().then((res)=>{
+          if (res.status){
+            sunshine.value=parseInt(res.data.data);
+          }
+        })
+        developApis.getEarthTem().then((res)=>{
+          if (res.status){
+            earthTem.value=res.data.data;
+          }
+        })
+        developApis. getTemperature().then((res)=>{
+          if (res.status){
+            weatherTem.value=res.data.data;
+          }
+        })
+        developApis.getairWet().then((res)=>{
+          if (res.status){
+            airWet.value=res.data.data;
+          }
+        })
+        developApis.getRainfall().then((res)=>{
+          if (res.status){
+            rainfall.value=parseInt(res.data.data)
+          }
+        })
+      }
+      getdatas();
+       let draw=()=>{
+        
         let oneDay = 24 * 3600 * 1000;
 let date = [];
 let data = [Math.random() * 300];
@@ -72,11 +109,11 @@ for (let i = 1; i < 20000; i++) {
   data.push(Math.round((Math.random() - 0.5) * 20 + data[i - 1]));
 
 }
-
-        const option1 = reactive(
+developApis.getTemY().then((res)=>{
+  const option1 = 
             {
   title: {
-    text: '温度趋势',
+    text: '湿度趋势',
     textStyle: {
         color:'white'
     }
@@ -111,7 +148,7 @@ for (let i = 1; i < 20000; i++) {
   },
   series: [
     {
-      data: [1200, 2230, 1900, 2100, 3500, 4200, 3975],
+      data:res.data.data,
       type: 'bar',
       itemStyle: {
         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
@@ -121,51 +158,62 @@ for (let i = 1; i < 20000; i++) {
       }
     }
   ]
-})
-        const option=reactive(
-            {
-
-  xAxis: {
-    name: '时间',
-    data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-    axisLabel: {
-      color: 'white' // 设置 x 轴字体颜色
-    },
-    axisLine: {
-      symbol: ['none', 'arrow'], // 添加箭头
-      lineStyle: {
-        color: 'white' // 设置轴线颜色
-      }
-    }
-  },
-  yAxis: {
-    name: '土壤湿度',
-    nameTextStyle:{
-        color:'white'
-    },
-    axisLabel: {
-      color: 'white' // 设置 x 轴字体颜色
-    },
-    axisLine: {
-      symbol: ['none', 'arrow'], // 添加箭头
-      lineStyle: {
-        color: 'white' // 设置轴线颜色
-      }
-    }
-  },
-  series: [
-    {
-      data: [1200, 2230, 1900, 2100, 3500, 4200, 3985],
-      type: 'line',
-      smooth: true,
-      itemStyle:{
-        color:'red'
-      }
-    }
-  ]
 }
-        )
-       let map = {
+let myChart = echarts.init(document.getElementById('data'));
+   
+   myChart.setOption(option1);
+})
+
+
+      
+developApis.getWetY().then((res)=>{
+  const option={
+
+xAxis: {
+  name: '时间',
+  data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+  axisLabel: {
+    color: 'white' // 设置 x 轴字体颜色
+  },
+  axisLine: {
+    symbol: ['none', 'arrow'], // 添加箭头
+    lineStyle: {
+      color: 'white' // 设置轴线颜色
+    }
+  }
+},
+yAxis: {
+  name: '土壤湿度',
+  nameTextStyle:{
+      color:'white'
+  },
+  axisLabel: {
+    color: 'white' // 设置 x 轴字体颜色
+  },
+  axisLine: {
+    symbol: ['none', 'arrow'], // 添加箭头
+    lineStyle: {
+      color: 'white' // 设置轴线颜色
+    }
+  }
+},
+series: [
+  {
+    data: res.data.data,
+    type: 'line',
+    smooth: true,
+    itemStyle:{
+      color:'red'
+    }
+  }
+]
+}
+ let myChart = echarts.init(document.getElementById('datas'));
+ myChart.setOption(option);
+})
+
+developApis.getFunnel().then((res)=>{
+  let map = {
   title: {
     text: ''
   },
@@ -175,7 +223,7 @@ for (let i = 1; i < 20000; i++) {
   },
  
   legend: {
-    data: ['Show', 'Click', 'Visit', 'Inquiry', 'Order'],
+    data:["叶菜类", "水稻", "麦类", "玉米", "豆类", "瓜类"],
     textStyle:{
         color:'white'
     }
@@ -215,29 +263,40 @@ for (let i = 1; i < 20000; i++) {
         }
       },
       data: [
-        { value: 60, name: 'Visit' },
-        { value: 40, name: 'Inquiry' },
-        { value: 20, name: 'Order' },
-        { value: 80, name: 'Click' },
-        { value: 100, name: 'Show' }
+        { value: 60, name: '叶菜类' },
+        { value: 40, name: '水稻' },
+        { value: 20, name: '麦类' },
+        { value: 80, name: '玉米' },
+        { value: 100, name: '豆类' }
       ]
     }
   ]
 }
-        onMounted(()=>{
-    let myChart = echarts.init(document.getElementById('data'));
+// let myChart = echarts.init(document.getElementById('data'));
    
-    myChart.setOption(option1);
-    let mycharts=echarts.init(document.getElementById('datas'));
-    mycharts.setOption(option)
+//    myChart.setOption(option1);
+//    let mycharts=echarts.init(document.getElementById('datas'));
+//    mycharts.setOption(option)
     let mymap=echarts.init(document.getElementById('maps'));
     mymap.setOption(map);
-    
+})
+       
+       }
+        onMounted(()=>{
+  draw()
+  
 })
         return {
-            option1,
-            option,
-            map
+            // option1,
+            // option,
+            // map,
+            draw,
+            sunshine,
+            weatherTem,
+            earthTem,
+            airWet,
+            getdatas,
+            rainfall
         }
     }
 }
@@ -254,6 +313,7 @@ for (let i = 1; i < 20000; i++) {
     bottom: 0;
     left: 0;
     right: 0;
+    overflow: hidden;
 }
 .map{
     width:53%;
