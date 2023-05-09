@@ -18,8 +18,8 @@ let routes = [{
                 component: () => import('@/pages/EButton')
             },
             {
-                path:'datav',
-                component:()=>import('@/pages/datav')
+                path:'equitmentManagement',
+                component:()=>import('@/pages/equimentManagement')
             }
 
         ],

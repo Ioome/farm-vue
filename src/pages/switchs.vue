@@ -72,7 +72,5 @@ export default {
 
 }
 
-.ant-switch-handle{
-    
-}
+
 </style>

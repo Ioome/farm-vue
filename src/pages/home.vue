@@ -23,6 +23,12 @@
         </template>
           <span  style="font-size: 20px;">数据总览</span>
         </a-menu-item>
+        <a-menu-item key="3" @click="gotoEquiment">
+          <template #icon>
+            <img :src="require('../assets/设备管理.svg')">
+        </template>
+          <span  style="font-size: 20px;">设备管理</span>
+        </a-menu-item>
 
       </a-menu>
       <div class="header">
@@ -71,7 +77,10 @@ let username=ref('')
         router.push('/datav')
       }
       let gotoBlock=()=>{
-        router.push('home/equitmentButton')
+        router.push('equitmentButton')
+      }
+      let gotoEquiment=()=>{
+        router.push('equitmentManagement')
       }
 
 
@@ -80,7 +89,9 @@ return {
   sureExit,
   ...toRefs(state),
   onOpenChange,
-  gotoDatav
+  gotoDatav,
+  gotoBlock,
+  gotoEquiment
 }
     }
 }
@@ -118,7 +129,7 @@ return {
     margin:0px;
    position: fixed;
   overflow-x: scroll;
-  overflow-y: hidden;
+  
 
 background-size:100% 100%;
 background-attachment:fixed;

@@ -3,7 +3,9 @@ import App from './App.vue';
 import router from './pages/route';
 import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
-import VCharts from 'v-charts-v2'
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+
 // import DataV, { setClassNamePrefix } from '@dataview/datav-vue3';
 // import { BorderBox13 } from '@dataview/datav-vue3';
 // import { BorderBox11 } from '@dataview/datav-vue3';
@@ -14,6 +16,8 @@ const app = createApp(App);
 app.use(Antd)
 app.use(router);
 app.use(echarts);
+
+app.use(ElementPlus)
 // app.use(dataV)
 // app.use(DataV, { classNamePrefix: 'dv-' });
 // app.use(BorderBox13)

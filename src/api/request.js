@@ -78,11 +78,105 @@ deleteBlocks(data){
                },
        })
     },
+    deleteEquiment(data){
+        return axios.post(baseURL+'/equipment/delete',data,{
+            headers:
+                {
+                    token:window.localStorage.getItem('token')
+                },
+        })
+    },
     logout(data){
         return AxiosGet(data).get('/admin/logout')
     },
     passwordReset(data){
         return Axiospost(data).post('/users/resetPass')
-    }
+    },
+    addLand(data){
+        return axios.post(baseURL+'/block/add',data,{
+            headers:
+                {
+                    token:window.localStorage.getItem('token')
+                },
+        })
+    },
+    getPlantById(data){
+        return axios.post(baseURL+'/planting/getPlanting',data,{
+            headers:{
+                token:window.localStorage.getItem('token')
+            }
+        })
+    },
+    getTemperature(data){
+        return axios.post(baseURL+'/data/getTemperature',data,{
+            headers:{
+                token:window.localStorage.getItem('token')
+            }
+        })
+    },
+    getSunshine(data){
+        return axios.post(baseURL+'/data/getSunShine',data,{
+            headers:{
+                token:window.localStorage.getItem('token')
+            }
+        })},
+        getRainfall(data){
+    return axios.post(baseURL+'/data/getRailfall',data,{
+        headers:{
+            token:window.localStorage.getItem('token')
+        }
+    })
+        },
+        getairWet(data){
+            return axios.post(baseURL+'/data/getAirHumidity',data,{
+                headers:{
+                    token:window.localStorage.getItem('token')
+                }
+            })
+        },
+        getEarthTem(data){
+            return axios.post(baseURL+'/data/getLandHumidity',data,{
+                headers:{
+                    token:window.localStorage.getItem('token')
+                }
+            })
+        },
+        getTemX(){
+            return axios.get(baseURL+'/data/getWeek',{
+                headers:
+                    {
+                        token:window.localStorage.getItem('token')
+                    },
+            }
+            )
+        },
+        getTemY(){
+            return axios.get(baseURL+'/data/getWeekY',{
+                headers:
+                    {
+                        token:window.localStorage.getItem('token')
+                    },
+            }
+            )
+        },
+        getFunnel(){
+            return axios.get(baseURL+'/data/getFunualx',{
+                headers:
+                    {
+                        token:window.localStorage.getItem('token')
+                    },
+            }
+            )
+        },
+        getWetY(){
+            return axios.get(baseURL+'/data/getY',{
+                headers:
+                    {
+                        token:window.localStorage.getItem('token')
+                    },
+            }
+            )
+        }
+
 }
 export default developApis

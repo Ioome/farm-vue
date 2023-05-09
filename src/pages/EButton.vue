@@ -1,7 +1,7 @@
 <template>
   <div>
-
-    <a-table :columns="columns" 
+    <a-button type="primary" style="margin-left: 70%;margin-bottom:10px; " @click="addshow=true">添加土地</a-button>
+    <a-table :columns="columns" :pagination="{  pageSize:7 }"
     :data-source="datas"
     style="width: 90%;"
     
@@ -40,7 +40,7 @@
   </a-col>
 </a-row>
   </a-modal>
-  <a-modal v-model:visible="visible" title="Basic Modal" >
+  <a-modal v-model:visible="visible" title="Basic Modal">
     <a-descriptions title="" :column="1" bordered>
     <a-descriptions-item label="土地">Cloud Database</a-descriptions-item>
     <a-descriptions-item label="地址">Prepaid</a-descriptions-item>
@@ -55,6 +55,17 @@
     </a-descriptions-item>
   
   </a-descriptions>
+    </a-modal>
+    <a-modal v-model:visible="addshow"  title="添加土地" @ok="addlandNow">
+     <div style="display: flex;flex-wrap: wrap;">
+     <p> 土地名称：<a-input v-model:value="addLand.landName" style="width: 200px;margin-left: 10px;"></a-input></p>
+     
+     <p> 土地成本：<el-input-number v-model="addLand.price"  :min="1000" :max="100000" :step="1000" label="描述文字" style="margin-left: 10px;"></el-input-number></p>
+     <p> 土地规模：<a-input v-model:value="addLand.scale" style="width: 200px;margin-left: 10px;"></a-input></p>
+     <p> 土地面积：<a-input v-model:value="addLand.area" style="width: 200px;margin-left: 10px;"></a-input></p>
+     <p> 土地详情：<a-input v-model:value="addLand.detail" style="width: 200px;margin-left: 10px;"></a-input></p> 
+     <p> 土地期限：<a-date-picker v-model:value="addLand.landTime" style="margin-left: 10px;"  picker="year"/></p>
+    </div>
     </a-modal>
   </div>
 </template>
@@ -117,6 +128,17 @@ export default {
   
   setup(){
     let detailVisible=ref(false)
+    let addshow=ref(false)
+    let addLand=reactive({
+      landName:'',
+      landPosition:'',
+      scale:'',
+     area:1,
+     detail:'',
+     landTime:'',
+     price:1000,
+
+    })
     let farmData=reactive({
       name:'',
       city:'',
@@ -124,6 +146,7 @@ export default {
       cropType:'',
       cropVariety:'',
       growthCycle:'',
+      
       recommendedTemperature:'',
       recommendedHumidity:'',
       size:''
@@ -159,9 +182,30 @@ export default {
             formState.cropName=res.data.data.suitableCrop
 
       })
+      developApis.getPlantById({id:id}).then()
      
     }
-    
+    let addlandNow=()=>{
+      if (addLand.landName==''||addLand.scale==''||addLand.area==''||addLand.detail==''||addLand.landTime==''){
+        alert("请填写完整信息")
+        return
+      }
+      else
+       
+   developApis.addLand({
+      landName:addLand.landName,
+      scale:addLand.scale,
+      allArea:addLand.area,
+      details:addLand.detail,
+      landTime:addLand.landTime.year().toString(),
+      price:addLand.price
+    }).then((res)=>{
+      if (res.status){
+        addshow.value=false
+        getLandData()
+      }
+    })
+    } 
    let getLandData=()=>{
     datas.value=[];
 developApis.getAllBlocks().then((res)=>{
@@ -195,7 +239,10 @@ developApis.getuserInfo().then()
       formState,
       deleteBlock,
       detailVisible,
-      farmData
+      farmData,
+      addshow,
+      addLand,
+      addlandNow
     }
   }
 }
