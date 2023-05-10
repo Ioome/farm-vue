@@ -182,7 +182,7 @@ export default {
             formState.cropName=res.data.data.suitableCrop
 
       })
-      developApis.getPlantById({id:id}).then()
+      developApis.checkTheLand({id:id}).then()
      
     }
     let addlandNow=()=>{

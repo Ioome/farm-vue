@@ -21,7 +21,7 @@
             <div style="margin-top: 35px;margin-left: 30px;">
             <span style="font-size: 20px;color: white;">温度</span> 
           <img :src="require('../assets/温度.svg')" /> 
-          <span style="font-size: 30px;color: aqua;margin-left: 40px;"><strong>{{ weatherTem  }}°C</strong></span>
+          <span style="font-size: 30px;color: aqua;margin-left: 40px;"><strong>{{ weatherTem||35  }}°C</strong></span>
         </div>
         </dv-border-box13>
         <dv-border-box13 class="weather">
