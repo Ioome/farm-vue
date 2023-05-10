@@ -20,7 +20,20 @@ let routes = [{
             {
                 path:'equitmentManagement',
                 component:()=>import('@/pages/equimentManagement')
-            }
+            },
+            {
+                path:'personalInfo',
+                component:()=>import('@/pages/personalInfo'),
+                beforeEnter:(from, to,next)=>{
+                    if (window.localStorage.getItem('token')){
+                        next()
+                    }
+                    else {
+                        alert("你还没有登录，请先登录")
+        
+                    }
+                }
+             }
 
         ],
         beforeEnter:(from, to,next)=>{
@@ -50,12 +63,7 @@ let routes = [{
         path: '/login',
         component: login
     },
-    {
-        path: '/switchs',
-        component: switchs,
-
-
-    },
+     
     
 ];
 let router = createRouter({

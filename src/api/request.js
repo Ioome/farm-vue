@@ -150,6 +150,27 @@ deleteBlocks(data){
             }
             )
         },
+        updatePersonalInfo(data){
+            return axios.post(baseURL+'/admin/updateInfo',data,{
+                headers:{
+                    token:window.localStorage.getItem('token')
+                }
+            })
+        },
+        getPersonalInfo(data){
+            return axios.post(baseURL+'/admin/userInfo',data,{
+                headers:{
+                    token:window.localStorage.getItem('token')
+                }
+            })
+        },
+        logout(data){
+            return axios.post(baseURL+'/admin/logout',data,{
+                headers:{
+                    token:window.localStorage.getItem('token')
+                }
+            })
+        },
         getTemY(){
             return axios.get(baseURL+'/data/getWeekY',{
                 headers:

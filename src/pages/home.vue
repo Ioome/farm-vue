@@ -29,11 +29,17 @@
         </template>
           <span  style="font-size: 20px;">设备管理</span>
         </a-menu-item>
+        <a-menu-item key="4" @click="gotoPersonal">
+          <template #icon>
+            <img :src="require('../assets/个人中心.svg')">
+        </template>
+          <span  style="font-size: 20px;">个人中心</span>
+        </a-menu-item>
 
       </a-menu>
       <div class="header">
          <div style="margin-left: 23%;font-size: 18px;margin-top: 1.3%;"> <IdcardTwoTone style="margin-right: 1%;" />你好,{{ username }}</div>
-         <div class="logout"><LoginOutlined /></div>
+         <div class="logout" @click="islogout"><LoginOutlined /></div>
         </div>
        <div class="content">
         <router-view />
@@ -47,6 +53,7 @@
 import {  reactive, toRefs,ref } from 'vue';
 import { IdcardTwoTone,LoginOutlined } from '@ant-design/icons-vue';
 import { useRouter } from 'vue-router';
+import developApis from '@/api/request';
 
 export default {
     components:{
@@ -76,11 +83,27 @@ let username=ref('')
       let gotoDatav=()=>{
         router.push('/datav')
       }
+      let gotoPersonal=()=>{
+        router.push('personalInfo')
+      }
       let gotoBlock=()=>{
         router.push('equitmentButton')
       }
       let gotoEquiment=()=>{
         router.push('equitmentManagement')
+      }
+      let islogout=()=>{
+        if (window.confirm('确认退出登录吗？')) {
+             developApis.logout().then((res)=>{
+              if (res.status){
+                router.replace('/login');
+                window.localStorage.removeItem('token');
+              }
+             })
+        } 
+        else {
+    
+        }
       }
 
 
@@ -91,7 +114,9 @@ return {
   onOpenChange,
   gotoDatav,
   gotoBlock,
-  gotoEquiment
+  gotoEquiment,
+  islogout,
+  gotoPersonal
 }
     }
 }
