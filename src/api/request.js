@@ -197,6 +197,16 @@ deleteBlocks(data){
                     },
             }
             )
+        },
+        passwordChange(data){
+            return axios.post(baseURL+'/admin/updatePassword',data,{
+                headers:{
+                    token:window.localStorage.getItem('token')
+                }
+            })
+        },
+        getPublicKeys(){
+            return axios.get(baseURL+'/admin/getPublicKey')
         }
 
 }

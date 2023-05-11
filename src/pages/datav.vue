@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { reactive,onMounted,ref } from 'vue';
+import {onMounted,ref } from 'vue';
 import * as echarts from 'echarts'
 import developApis from '@/api/request';
 export default {

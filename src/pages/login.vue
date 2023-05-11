@@ -106,9 +106,10 @@ import { reactive,ref } from 'vue';
 import { useRouter } from 'vue-router';
 import developApis from "@/api/request";
 import {message} from "ant-design-vue";
+import encodes from '@/utils/encryptor';
 export default {
     setup () {
-        
+    let PublicKeys=ref(''); 
     const router=useRouter();
     let formshow=ref(true)
         const formState = reactive({
@@ -124,21 +125,35 @@ export default {
         phone:'',
         email:''
       });
-
+      let getPublicKeys=async()=>{
+    try {
+            const response = await developApis.getPublicKeys();
+            PublicKeys.value = response.data.data;
+            console.log(PublicKeys.value);
+        } 
+        catch (error) {
+            console.error(error);
+        }
+  }
+      getPublicKeys();
         let loginOver=()=>{
-          developApis.Login({username:formState.username,password: formState.password}).then((res)=>{
-            if (res.status){
+          let password=encodes(PublicKeys.value,formState.password)
+          developApis.Login({username:formState.username,password: password}).then((res)=>{
+            if (res.data.message=="success"){
 
               window.localStorage.setItem('token',res.data.data.token)
               window.localStorage.setItem('username',formState.username)
               router.push('home/equitmentButton')
             }
+            else{
+              alert("用户名或密码错误");
+            }
           })
         }
         let registerOver=()=>{
-
-          developApis.resgister({username: formStates.username,password: formStates.password,phone:formStates.phone,email:formStates.email}).then((res)=>{
-                if (res.status){
+          let password=encodes(PublicKeys.value,formStates.password)
+          developApis.resgister({username: formStates.username,password: password,phone:formStates.phone,email:formStates.email}).then((res)=>{
+                if (res.data.message==="success"){
                   message.success("注册完成")
                   formshow.value=true
                 }
@@ -220,7 +235,8 @@ export default {
       passwordsvalid,
       phonevaild,
       usernamevaild,
-      loginOver
+      loginOver,
+     
     };
     }
 }

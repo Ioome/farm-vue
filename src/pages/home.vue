@@ -50,7 +50,7 @@
 <script>
 
 
-import {  reactive, toRefs,ref } from 'vue';
+import {  reactive, toRefs,ref,onMounted } from 'vue';
 import { IdcardTwoTone,LoginOutlined } from '@ant-design/icons-vue';
 import { useRouter } from 'vue-router';
 import developApis from '@/api/request';
@@ -106,7 +106,11 @@ let username=ref('')
         }
       }
 
+onMounted(()=>{
 
+ 
+
+})
 return {
   username,
   sureExit,
