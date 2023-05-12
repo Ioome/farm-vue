@@ -283,7 +283,11 @@ developApis.getFunnel().then((res)=>{
        
        }
         onMounted(()=>{
-  draw()
+          draw();
+          let timer=setInterval(()=>{
+            getdatas()
+          },10000)
+  
   
 })
         return {
