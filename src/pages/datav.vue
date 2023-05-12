@@ -135,7 +135,7 @@ developApis.getTemY().then((res)=>{
     }
   },
   yAxis: {
-    name: '温度',
+    name: '湿度',
     nameTextStyle: {
       color: 'white' // 修改 y 轴名称字体颜色
     },
