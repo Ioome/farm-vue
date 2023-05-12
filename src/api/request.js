@@ -1,6 +1,6 @@
 import axios from "axios";
-const baseURL="http://119.91.218.241:2346/farm/api"
-
+//const baseURL="http://119.91.218.241:2346/farm/api"
+const baseURL="http://localhost:8080/farm/api"
 function Axiospost(data)
 {
     let myaxios=axios.create({
